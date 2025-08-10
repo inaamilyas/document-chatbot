@@ -8,7 +8,8 @@ from dotenv import load_dotenv
 from app.api.v1.routers import router as api_v1_router
 from app.db.mongodb import MongoDB
 
-load_dotenv() 
+load_dotenv()
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -18,6 +19,7 @@ async def lifespan(app: FastAPI):
     # Disconnect from MongoDB at shutdown
     await MongoDB.disconnect()
 
+
 app = FastAPI(
     title=settings.PROJECT_NAME,
     description=settings.PROJECT_DESCRIPTION,
@@ -25,7 +27,7 @@ app = FastAPI(
     openapi_url=settings.OPENAPI_URL,
     docs_url=settings.API_DOCS_URL,
     redoc_url=settings.REDOC_URL,
-    lifespan=lifespan
+    lifespan=lifespan,
 )
 
 # Set up CORS middleware
@@ -38,7 +40,4 @@ app.add_middleware(
 )
 
 # Include API routers
-app.include_router(
-    api_v1_router,
-    prefix=settings.API_V1_STR
-)
+app.include_router(api_v1_router, prefix=settings.API_V1_STR)
